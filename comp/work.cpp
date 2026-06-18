@@ -1,47 +1,72 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
+#include <map>
+
 using namespace std;
- 
-void solve() {
-    
-}
- 
+
+
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
- 
+
     int t;
     cin >> t;
     while (t--) {
-        int n;
-        cin >> n;
-        string top, bottom;
+       int n;
+       cin >> n;
 
-        cin >> top >> bottom;
-        
-        int total = 0;
-        for(int i = 0; i < n; i++){
-            if(top[i] == bottom[i]){
-                continue;
+       priority_queue<int> maxHeap;
+       vector<int> arr(n);
+
+       for(int i = 0; i < n; i++){
+        int c;
+        cin >> c;
+        arr[i] = c;
+        maxHeap.push(c);
+       }
+
+       for(int i = 0; i < n/2; i++){
+        maxHeap.pop();
+       }
+
+       int median = maxHeap.top();
+
+       long long counter = 0;
+
+       int balance = 0;
+       
+       int l = 0;
+       bool found = false;
+       for(int i = 0; i < n; i++){
+
+            if(arr[i] < median){
+                balance-=1;
+            }
+            else if(arr[i] > median){
+                balance+=1;
+            }
+            else if(!found){
+                found = true;
+            }
+            else{
+                if(balance < 0) balance++;
+                else balance--;
             }
 
-            if(i == n - 1) {
-                total++;
-                continue;
-            } 
-            array<char,2> A = {top[i],bottom[i]};
-             array<char,2> B = {top[i+1],bottom[i+1]};
-            if(A == B) {
-                i++;
-                continue;
+            if(balance == 0 && found){
+                counter+=1;
+                found = false;
             }
-            else {
-                total++;
-            }
-        }
-        cout << total << '\n';
+            
+       }
+
+       cout << counter << '\n';
+
+
     }
- 
+
     return 0;
 }
